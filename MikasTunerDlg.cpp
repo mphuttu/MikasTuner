@@ -3,6 +3,8 @@
 #include "MikasTuner.h"
 #include "MikasTunerDlg.h"
 #include "afxdialogex.h"
+#include <cmath>
+#include <CommCtrl.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -81,9 +83,12 @@ BOOL CMikasTunerDlg::OnInitDialog()
     // Fill microphone list
     FillMicrophoneList();
 
-    // Initialize progress bar
-    m_progressTuning.SetRange(-50, 50);
+    // Initialize progress bar with 32-bit range (supports negative values)
+    m_progressTuning.SetRange32(-50, 50);
     m_progressTuning.SetPos(0);
+
+    // Add smooth style for better visual feedback
+    m_progressTuning.ModifyStyle(0, PBS_SMOOTH);
 
     // Set initial UI state
     m_staticFrequency.SetWindowText(_T("---"));
@@ -361,23 +366,44 @@ void CMikasTunerDlg::UpdateTunerDisplay()
     CString strCents;
     CString strStatus;
     int centsInt = static_cast<int>(m_displayCents);
+    double absCents = std::abs(m_displayCents);
 
-    if (m_displayCents > -3.0 && m_displayCents < 3.0)
+    if (absCents < 1.0)
     {
-        // In tune!
-        strCents = _T("OK - In tune!");
-        strStatus = _T("The string is in tune!");
+        // PERFECT! Virtually in tune
+        strCents = _T("★ PERFECT! ★");
+        strStatus = _T("Excellent! The string is perfectly in tune!");
+    }
+    else if (absCents < 3.0)
+    {
+        // Very close - practically in tune
+        strCents = _T("✓ IN TUNE ✓");
+        strStatus = _T("Great! The string is in tune!");
+    }
+    else if (absCents < 5.0)
+    {
+        // Almost there
+        if (m_displayCents < 0)
+        {
+            strCents.Format(_T("Almost! %.0f cents low"), absCents);
+            strStatus = _T("Very close - tighten just a tiny bit");
+        }
+        else
+        {
+            strCents.Format(_T("Almost! +%.0f cents high"), absCents);
+            strStatus = _T("Very close - loosen just a tiny bit");
+        }
     }
     else if (m_displayCents < 0)
     {
         // Too low
-        strCents.Format(_T("FLAT: %.0f cents low"), -m_displayCents);
+        strCents.Format(_T("FLAT: %.0f cents low"), absCents);
         strStatus = _T("Tighten the string!");
     }
     else
     {
         // Too high
-        strCents.Format(_T("SHARP: +%.0f cents high"), m_displayCents);
+        strCents.Format(_T("SHARP: +%.0f cents high"), absCents);
         strStatus = _T("Loosen the string!");
     }
 
@@ -407,7 +433,7 @@ void CMikasTunerDlg::ResetAllBars()
 void CMikasTunerDlg::UpdateStringBar(const CString& stringName, double cents)
 {
     // Update only the detected string's bar
-    if (stringName == _T("E (matala)"))
+    if (stringName == _T("E low"))
     {
         m_barELow.SetCents(cents);
     }
@@ -423,11 +449,11 @@ void CMikasTunerDlg::UpdateStringBar(const CString& stringName, double cents)
     {
         m_barG.SetCents(cents);
     }
-    else if (stringName == _T("B (H)"))
+    else if (stringName == _T("B"))
     {
         m_barH.SetCents(cents);
     }
-    else if (stringName == _T("E (korkea)"))
+    else if (stringName == _T("E high"))
     {
         m_barEHigh.SetCents(cents);
     }

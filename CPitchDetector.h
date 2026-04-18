@@ -21,7 +21,8 @@ public:
     };
 
     static const GuitarString GUITAR_STRINGS[6];
-    const GuitarString* GetNearestString() const;
+    const GuitarString* GetNearestString(); // Palauttaa lähimmän kielen (päivittää lukitusta)
+    int GetLockedStringIndex() const { return m_lockedStringIndex; }
     double GetCentsOff() const; // Kuinka monta senttiä ohi tavoitteesta
 
     // Asetukset
@@ -56,6 +57,14 @@ private:
     double m_minConfidence;       // Minimi luotettavuus
     static constexpr double MIN_GUITAR_FREQ = 75.0;       // E2 ~82 Hz, hieman alle
     static constexpr double MAX_GUITAR_FREQ = 350.0;      // E4 ~330 Hz, hieman yli
-    static constexpr double FREQUENCY_JUMP_THRESHOLD = 15.0; // Hz, suuremmat hypyt suodatetaan
-    static constexpr int STABLE_COUNT_THRESHOLD = 2;      // Montako kertaa pitää toistua ennen hyväksyntää
+    static constexpr double FREQUENCY_JUMP_THRESHOLD = 50.0; // Hz, suuremmat hypyt nollaavat historian
+    static constexpr int STABLE_COUNT_THRESHOLD = 3;      // Montako kertaa pitää toistua ennen hyväksyntää
+
+    // Kielilukitus (string lock) - estää hyppimistä kielten välillä
+    int m_lockedStringIndex;                              // Lukittu kieli (-1 = ei lukitusta)
+    int m_stringLockCount;                                // Montako kertaa sama kieli havaittu peräkkäin
+    int m_lastDetectedStringIndex;                        // Edellinen havaittu kieli (lukitusta varten)
+    static constexpr int STRING_LOCK_THRESHOLD = 5;       // Montako havaintoa ennen lukitusta
+    static constexpr double STRING_UNLOCK_CENTS = 55.0;   // Kuinka monta senttiä ennen lukituksen vapautusta
+    static constexpr int STRING_UNLOCK_COUNT = 4;         // Montako kertaa pitää olla unlock-alueen ulkopuolella
 };
