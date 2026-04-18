@@ -1,0 +1,30 @@
+# Visual Studio files
+.vs/
+Debug/
+Release/
+x64/
+x86/
+*.user
+*.suo
+*.ncb
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+
+# Build results
+*.obj
+*.pch
+*.pdb
+*.ilk
+*.exe
+*.dll
+*.lib
+*.log
+*.tlog
+*.lastbuildstate
+*.idb
+
+# IntelliSense
+*.aps
+ipch/
