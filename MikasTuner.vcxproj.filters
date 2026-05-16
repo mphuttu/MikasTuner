@@ -68,7 +68,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\MikasTuner.ico">
+    <Image Include="res\MikasTunerIcon.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

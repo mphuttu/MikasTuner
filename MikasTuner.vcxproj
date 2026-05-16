@@ -212,7 +212,7 @@
     <None Include="res\MikasTuner.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\MikasTuner.ico" />
+    <Image Include="res\MikasTunerIcon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

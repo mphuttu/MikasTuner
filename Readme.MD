@@ -1,21 +1,14 @@
 \# MikasTuner 🎸
 
-
+> **Work in progress** — This application is still under active development.
 
 A guitar tuner application built with MFC/C++ for Windows.
 
+## Features
 
-
-\## Features
-
-
-
-\- Real-time pitch detection using autocorrelation
-
-\- Visual tuning bars for each guitar string (E, A, D, G, B, E)
-
-\- Microphone selection
-
+- Real-time pitch detection using autocorrelation
+- Visual tuning bars for each guitar string (E, A, D, G, B, E)
+- Microphone selection
 \- Noise filtering and signal smoothing
 
 
