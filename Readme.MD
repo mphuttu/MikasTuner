@@ -4,6 +4,10 @@
 
 A guitar tuner application built with MFC/C++ for Windows.
 
+## Screenshot
+
+![Mika's Guitar Tuner](Docs/images/2026-05-18-MikasGuitarTuner-Screenshot.png)
+
 ## Features
 
 - Real-time pitch detection using autocorrelation
